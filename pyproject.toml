@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "wiki-rag-qa"
+version = "0.1.0"
+description = ""
+authors = ["johnxqiu <{ID}+{username}@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = "^0.0.340"
+openai = "^1.3.5"
+wikipedia-api = "^0.6.0"
+nltk = "^3.8.1"
+sentence-transformers = "^2.2.2"
+chromadb = "^0.4.18"
+langchainhub = "^0.1.14"
+pandas = "^2.1.3"
+langchain-core = "^0.0.6"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
