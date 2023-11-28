@@ -1,5 +1,4 @@
-"""code for getting data from using wikipedia-api
-"""
+"""code for getting data from using wikipedia-api"""
 from typing import List
 
 import nltk
@@ -11,19 +10,13 @@ nltk.download("punkt")
 
 
 def try_get_wikipedia_page(in_page_name: str) -> wikipediaapi.WikipediaPage:
-    try:
-        wiki_wiki = wikipediaapi.Wikipedia(
-            user_agent=USER_AGENT,
-            language="en",
-            extract_format=wikipediaapi.ExtractFormat.WIKI,
-        )
-        return wiki_wiki.page(in_page_name)
-
-    except wikipediaapi.exceptions.DisambiguationError:
-        raise wikipediaapi.exceptions.DisambiguationError
-
-    except wikipediaapi.exceptions.PageError:
-        raise wikipediaapi.exceptions.PageError
+    wiki_wiki = wikipediaapi.Wikipedia(
+        user_agent=USER_AGENT,
+        language="en",
+        extract_format=wikipediaapi.ExtractFormat.WIKI,
+    )
+    assert wiki_wiki.page(in_page_name).exists()
+    return wiki_wiki.page(in_page_name)
 
 
 def get_wikipedia_summary_sentences(in_page_name: str) -> List[str]:

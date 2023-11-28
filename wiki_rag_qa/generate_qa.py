@@ -1,15 +1,18 @@
+"""Module for QA generation from string data"""
 from typing import List
 
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate,
-)
+from langchain.prompts.chat import (ChatPromptTemplate,
+                                    HumanMessagePromptTemplate,
+                                    SystemMessagePromptTemplate)
 from langchain_core.language_models.chat_models import BaseChatModel
 
-FACT_SPLIT_TEMPLATE = "Extract the individual facts out of this text. Don't include opinions. Return each claim on a new line with no header and keep them short sentences.\n"
+FACT_SPLIT_TEMPLATE = "Extract the individual facts out of this text. Don't \
+    include opinions. Return each claim on a new line with no header and keep \
+        them short sentences.\n"
 INPUT_QUERY_TEMPLATE = "{query}"
-QUESTION_GENERATION_TEMPLATE = "Given the following claim about {page_title}, generate a single sentence question that comprehensively answers the following statement. \n"
+QUESTION_GENERATION_TEMPLATE = "Given the following claim about {page_title}, \
+    generate a single sentence question that comprehensively answers the \
+        following statement. \n"
 
 fact_split_instruction_template = SystemMessagePromptTemplate.from_template(
     FACT_SPLIT_TEMPLATE
@@ -17,7 +20,7 @@ fact_split_instruction_template = SystemMessagePromptTemplate.from_template(
 query_template = HumanMessagePromptTemplate.from_template(INPUT_QUERY_TEMPLATE)
 
 
-def get_facts_from_summary(in_query: str, in_chat: BaseChatModel) -> List[str]:
+def get_facts_from_sentence(in_query: str, in_chat: BaseChatModel) -> List[str]:
     fact_splitting_prompt = ChatPromptTemplate.from_messages(
         [FACT_SPLIT_TEMPLATE, query_template]
     )
