@@ -1,7 +1,7 @@
 ## Wikipedia QA Generation
 `wiki_gen_qa` is a tool for generating questions and answer datasets from Wikipedia articles. It is intended to aid in the evaluation of Retrieval-Augmented Generation (RAG) based Question Answering systems.
 
-The main runtime `run_qa_gen.py` takes a wikipedia article, parses only the summary section and performs sentence segmentation with spacy. Then for each summary sentence, it uses GPT via the OpenAI API to generate a test question a list of factual claims within that sentence. The generating prompts are a work in progress and can be improved over time.
+The main runtime `run_qa_gen.py` takes a wikipedia article and parses the sentence in the article summary. Then for each grounding sentence, it uses GPT3.5 via the OpenAI API to generate a test question and a list of factual claims within that sentence. The generating prompt templates are a work in progress and can be improved over time.
 
 The result is a `json` with the following schema:
 
@@ -10,9 +10,9 @@ The result is a `json` with the following schema:
 | Field Name         | Type           | Description                                             | Example                                                  |
 | ------------------ | -------------- | ------------------------------------------------------- | -------------------------------------------------------- |
 | `id`               | int        | A unique identifier for the data object.                | 0                                                        |
-| `original_sentence`| str         | A sentence providing original information about Python. | "Python is a high-level, general-purpose programming language." |
+| `original_sentence`| str         | Grounding Sentence from article Summary. | "Python is a high-level, general-purpose programming language." |
 | `generated_question`| str        | A question generated based on the `original_sentence`.  | "What are the key characteristics of Python as a programming language?" |
-| `generated_facts`  | List[str] | A list of facts extracted or inferred from the `original_sentence`. | ["Python is a high-level programming language." <br> - "Python is a general-purpose programming language."] |
+| `generated_facts`  | List[str] | A list of granular facts extracted from the `original_sentence`. | ["Python is a high-level programming language." <br> "Python is a general-purpose programming language."] |
 
 
 To obtain the detailed sections of a wikipedia article for retrieval, use the function `wiki_gen_qa.wiki_tools.get_wiki_article_sections`
