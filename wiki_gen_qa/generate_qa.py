@@ -1,4 +1,5 @@
 """Module for QA generation from string data"""
+import asyncio
 from typing import List
 
 from langchain.prompts.chat import (
@@ -44,3 +45,24 @@ def get_question_from_sentence(
         ).to_messages()
     )
     return response.content
+
+
+def get_wiki_article_qa_facts(
+    id: int,
+    wiki_article_name: str,
+    summary_sentence: str,
+    chat: BaseChatModel,
+) -> List[dict]:
+    generated_question = get_question_from_sentence(
+        wiki_article_name, summary_sentence, chat
+    )
+    generated_facts = get_facts_from_sentence(summary_sentence, chat)
+    generated_question = get_question_from_sentence(
+        wiki_article_name, summary_sentence, chat
+    )
+    return {
+        "id": id,
+        "original_sentence": summary_sentence,
+        "generated_question": generated_question,
+        "generated_facts": generated_facts,
+    }
