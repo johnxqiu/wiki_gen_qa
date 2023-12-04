@@ -6,19 +6,20 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
-from typing import List
 
 from langchain.chat_models.openai import ChatOpenAI
 
 from wiki_gen_qa.generate_qa import get_wiki_article_qa_facts
 from wiki_gen_qa.wiki_tools import get_wikipedia_summary_sentences
+from wiki_gen_qa.wiki_tools import try_get_wikipedia_page
 
 
-async def get_wiki_article_qa(wiki_article_name: str) -> List[dict]:
+async def get_wiki_article_qa(wiki_article_name: str) -> list[dict]:
     start = time.time()
     assert os.environ["OPENAI_API_KEY"] is not None
     chat = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-    summary_sentence_list = get_wikipedia_summary_sentences(wiki_article_name)
+    wiki_page = try_get_wikipedia_page(wiki_article_name)
+    summary_sentence_list = get_wikipedia_summary_sentences(wiki_page)
     print(f'Wikpiedia page for "{wiki_article_name}" found!')
     print(f"Generating QA for {len(summary_sentence_list)} sentences...")
     params = [
@@ -30,8 +31,7 @@ async def get_wiki_article_qa(wiki_article_name: str) -> List[dict]:
         }
         for ith, summary_sentence in enumerate(summary_sentence_list)
     ]
-    # params = [(ith, wiki_article_name, summary_sentence, chat)
-    #            for ith, summary_sentence in enumerate(summary_sentence_list)]
+
     with ThreadPoolExecutor(max_workers=8) as executor:
         loop = asyncio.get_running_loop()
         tasks = [
@@ -39,7 +39,7 @@ async def get_wiki_article_qa(wiki_article_name: str) -> List[dict]:
             for param in params
         ]
         result_data = await asyncio.gather(*tasks)
-    print("finished in ", int(time.time() - start))
+    print("finished in {int(time.time() - start)} seconds")
     return result_data
 
 

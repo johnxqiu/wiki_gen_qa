@@ -1,11 +1,13 @@
 ## Wikipedia QA Generation
-`wiki_gen_qa` is a tool for generating questions and answer datasets from Wikipedia articles. It is intended to aid in the evaluation of Retrieval-Augmented Generation (RAG) based Question Answering systems.
+`wiki_gen_qa` is a tool for generating questions and answer pairs from Wikipedia articles along with granular factual claims. 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 The main runtime `run_qa_gen.py` takes a wikipedia article and parses the sentence in the article summary. Then for each grounding sentence, it uses GPT3.5 via the OpenAI API to generate a test question and a list of factual claims within that sentence. The generating prompt templates are a work in progress and can be improved over time.
 
 The result is a `json` with the following schema:
 
-### JSON Schema Documentation
+### JSON Schema
 
 | Field Name         | Type           | Description                                             | Example                                                  |
 | ------------------ | -------------- | ------------------------------------------------------- | -------------------------------------------------------- |
@@ -17,7 +19,7 @@ The result is a `json` with the following schema:
 
 To obtain the detailed sections of a wikipedia article for retrieval, use the function `wiki_gen_qa.wiki_tools.get_wiki_article_sections`
 
-### Quickstart:
+### Installation and Usage:
 - Obtain an OpenAI API key and set it as environment variable `OPENAI_API_KEY`
 - Install [poetry](https://python-poetry.org/docs/#installation) for python dependency management.
 - Clone this repo with `git clone https://github.com/johnxqiu/wiki_gen_qa.git`
@@ -25,7 +27,7 @@ To obtain the detailed sections of a wikipedia article for retrieval, use the fu
 - Enter the poetry python environment with `poetry shell`
 - Run the main script with `python run_qa_gen.py [wiki_article_name] [output_json_path]`. Output path is optional and defaults to `generated_qa.json`
 
-Example for the wikipedia article on Python:
+Example run for the wikipedia article on Python:
 
 ```
 python run_qa_gen.py "Python (programming language)"

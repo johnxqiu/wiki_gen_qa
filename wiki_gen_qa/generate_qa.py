@@ -1,7 +1,4 @@
 """Module for QA generation from string data"""
-import asyncio
-from typing import List
-
 from langchain.prompts.chat import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
@@ -23,7 +20,7 @@ fact_split_instruction_template = SystemMessagePromptTemplate.from_template(
 query_template = HumanMessagePromptTemplate.from_template(INPUT_QUERY_TEMPLATE)
 
 
-def get_facts_from_sentence(in_query: str, in_chat: BaseChatModel) -> List[str]:
+def get_facts_from_sentence(in_query: str, in_chat: BaseChatModel) -> list[str]:
     fact_splitting_prompt = ChatPromptTemplate.from_messages(
         [FACT_SPLIT_TEMPLATE, query_template]
     )
@@ -52,7 +49,7 @@ def get_wiki_article_qa_facts(
     wiki_article_name: str,
     summary_sentence: str,
     chat: BaseChatModel,
-) -> List[dict]:
+) -> list[dict]:
     generated_question = get_question_from_sentence(
         wiki_article_name, summary_sentence, chat
     )
