@@ -23,7 +23,7 @@ async def get_wiki_article_qa(wiki_article_name: str) -> List[dict]:
     print(f"Generating QA for {len(summary_sentence_list)} sentences...")
     params = [
         {
-            "id": ith,
+            "sent_id": ith,
             "wiki_article_name": wiki_article_name,
             "summary_sentence": summary_sentence,
             "chat": chat,
